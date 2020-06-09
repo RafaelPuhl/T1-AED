@@ -34,12 +34,19 @@ public class Indice {
             return palavra;
         }
 
-        public boolean addPagina(int numero){
-            // TODO: 03/06/2020
-            return true;
+        public boolean addPagina(int numeroPagina) {
+            if (refHeadPagina == null) {
+                refHeadPagina = new NodoPagina(numeroPagina);
+
+            } else if ()
+            if (refHeadPagina.getRefTail().getPagina() == numeroPagina) {
+                return false;
+            } else {
+                return true;
+            }
         }
 
-        public List<Integer> getListaPaginas(){
+        public List<Integer> getListaPaginas() {
             // TODO: 03/06/2020
             return null;
         }
@@ -55,10 +62,6 @@ public class Indice {
 
         public int getPagina() {
             return pagina;
-        }
-
-        public NodoPagina getRefNextPagina() {
-            return refNextPagina;
         }
 
         public void setRefNextPagina(NodoPagina refNextPagina) {
