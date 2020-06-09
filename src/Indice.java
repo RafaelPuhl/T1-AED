@@ -32,10 +32,10 @@ public class Indice {
     public List<String> getPalavras(){
         List<String> palavras = new ArrayList();
         NodoPalavra palavra = headPalavra;
-        if(palavra == null) return null;
+        if(palavra == null) return palavras;
         do {
             palavras.add(palavra.getPalavra());
-            palavra.getRefNextPalavra();
+            palavra = palavra.getRefNextPalavra();
         }while (palavra != null);
         return palavras;
     }
