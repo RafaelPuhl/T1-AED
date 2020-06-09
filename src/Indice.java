@@ -7,11 +7,52 @@ public class Indice {
     private NodoPalavra tailPalavra;
 
     public boolean addPalavraPagina(String palavra, int pagina) {
-        return true;
+        if (headPalavra == null) {
+            headPalavra = new NodoPalavra(palavra, pagina);
+            tailPalavra = headPalavra;
+            return true;
+        } else if (tailPalavra.getPalavra().equals(palavra)) {
+            tailPalavra.addPagina(pagina);
+            return true;
+        } else if (!tailPalavra.getPalavra().equals(palavra)) {
+            tailPalavra.setRefNextPalavra(new NodoPalavra(palavra, pagina));
+            tailPalavra = tailPalavra.getRefNextPalavra();
+            return true;
+        }
+        return false;
     }
 
-    public int getPaginas(String palavra) {
-        return 0;
+    public List<Integer> getPaginas(String palavra) {
+        NodoPalavra nodoPalavra = findPalavra(palavra);
+        return nodoPalavra == null
+                ? new ArrayList<>()
+                : nodoPalavra.getListaPaginas();
+    }
+
+    public List<String> getPalavras(){
+        List<String> palavras = new ArrayList();
+        NodoPalavra palavra = headPalavra;
+        if(palavra == null) return null;
+        do {
+            palavras.add(palavra.getPalavra());
+            palavra.getRefNextPalavra();
+        }while (palavra != null);
+        return palavras;
+    }
+
+    @Override
+    public String toString() {
+        return "Indice{}";
+    }
+
+    private NodoPalavra findPalavra(String palavra) {
+        if(headPalavra == null) return null;
+        NodoPalavra nodoPalavra = headPalavra;
+        while (nodoPalavra != null){
+            if (nodoPalavra.getPalavra().equals(palavra)) return nodoPalavra;
+            nodoPalavra = nodoPalavra.getRefNextPalavra();
+        }
+        return null;
     }
 
     private class NodoPalavra {
@@ -20,9 +61,9 @@ public class Indice {
         private NodoPagina tailPagina;
         private NodoPalavra refNextPalavra;
 
-        public NodoPalavra(String palavra, NodoPagina refHeadPagina) {
+        public NodoPalavra(String palavra, int pagina) {
             this.palavra = palavra;
-            this.nodePagina = refHeadPagina;
+            addPagina(pagina);
         }
 
         public NodoPalavra getRefNextPalavra() {
