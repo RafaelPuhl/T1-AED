@@ -1,8 +1,10 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class Indice {
 
-    private NodoPalavra refHeadPalavra;
+    private NodoPalavra headPalavra;
+    private NodoPalavra tailPalavra;
 
     public boolean addPalavraPagina(String palavra, int pagina) {
         return true;
@@ -14,12 +16,13 @@ public class Indice {
 
     private class NodoPalavra {
         private String palavra;
-        private NodoPagina refHeadPagina;
+        private NodoPagina nodePagina;
+        private NodoPagina tailPagina;
         private NodoPalavra refNextPalavra;
 
         public NodoPalavra(String palavra, NodoPagina refHeadPagina) {
             this.palavra = palavra;
-            this.refHeadPagina = refHeadPagina;
+            this.nodePagina = refHeadPagina;
         }
 
         public NodoPalavra getRefNextPalavra() {
@@ -35,26 +38,35 @@ public class Indice {
         }
 
         public boolean addPagina(int numeroPagina) {
-            if (refHeadPagina == null) {
-                refHeadPagina = new NodoPagina(numeroPagina);
-
-            } else if ()
-            if (refHeadPagina.getRefTail().getPagina() == numeroPagina) {
-                return false;
-            } else {
+            if (nodePagina == null) {
+                nodePagina = new NodoPagina(numeroPagina);
+                tailPagina = nodePagina;
                 return true;
+            } else if (tailPagina.getPagina() != numeroPagina) {
+                NodoPagina newPagina = new NodoPagina(numeroPagina);
+                tailPagina.setRefnextpagina(newPagina);
+                tailPagina = newPagina;
+                return true;
+            } else {
+                return false;
             }
         }
 
         public List<Integer> getListaPaginas() {
-            // TODO: 03/06/2020
-            return null;
+            List<Integer> paginas = new ArrayList<>();
+            NodoPagina pagina = nodePagina;
+            if (pagina == null) return paginas;
+            do {
+                paginas.add(pagina.getPagina());
+                pagina = pagina.getNextpagina();
+            } while (pagina != null);
+            return paginas;
         }
     }
 
     private class NodoPagina {
         private int pagina;
-        private NodoPagina refNextPagina;
+        private NodoPagina refnextpagina;
 
         public NodoPagina(int pagina) {
             this.pagina = pagina;
@@ -64,8 +76,12 @@ public class Indice {
             return pagina;
         }
 
-        public void setRefNextPagina(NodoPagina refNextPagina) {
-            this.refNextPagina = refNextPagina;
+        public void setRefnextpagina(NodoPagina refnextpagina) {
+            this.refnextpagina = refnextpagina;
+        }
+
+        public NodoPagina getNextpagina() {
+            return refnextpagina;
         }
     }
 }
