@@ -42,7 +42,13 @@ public class Indice {
 
     @Override
     public String toString() {
-        return "Indice{}";
+        String aux = "";
+        List<String> list = getPalavras();
+        for (String palavra : list ) {
+            aux = palavra + " {" + getPaginas(palavra) + "}";
+            aux = "\n";
+        }
+        return "Indice{ " + aux +" }";
     }
 
     private NodoPalavra findPalavra(String palavra) {
