@@ -8,8 +8,8 @@ import java.nio.file.Paths;
 
 public class Leitura {
 
-    public static void main(String[] args) {
-        String linhas[] = new String[1000];
+    public Indice getIndice() {
+        Indice indice = new Indice();
         int numLinhas = 0;
         int numPaginas = 1;
 
@@ -35,7 +35,7 @@ public class Leitura {
                 System.out.println(linhas[n]);
             }
         }
-
+        // TODO: 15/06/2020
         for (int i = 1; i <= 10; i++) {
             System.out.println("\nPalavras da linha " + i + ": ");
             linhas[i-1] = linhas[i-1].replaceAll("\\t"," "); // substitui tab por espaco em branco
@@ -46,5 +46,6 @@ public class Leitura {
                 System.out.println("->" + s);
             }
         }
+        return indice;
     }
 }
