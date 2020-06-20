@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class Index {
 
@@ -11,17 +12,37 @@ public class Index {
             headPalavra = new NodoPalavra(palavra, pagina);
             tailPalavra = headPalavra;
             return true;
-        } else if (tailPalavra.getPalavra().equals(palavra)) {
-            tailPalavra.addPagina(pagina);
-            return true;
-        } else if (!tailPalavra.getPalavra().equals(palavra)) {
-            tailPalavra.setRefNextPalavra(new NodoPalavra(palavra, pagina));
-            tailPalavra = tailPalavra.getRefNextPalavra();
-            return true;
+        } else {
+            NodoPalavra nodoPalavra = findPalavra(palavra);
+            if (nodoPalavra != null) {
+                return nodoPalavra.addPagina(pagina);
+            }
+            return insertOnAlphabeticOrder(new NodoPalavra(palavra, pagina));
         }
-        return false;
     }
 
+    private boolean insertOnAlphabeticOrder(NodoPalavra toInsert) {
+        if (headPalavra.getPalavra().compareTo(toInsert.getPalavra()) > 0) {
+            toInsert.setRefNextPalavra(headPalavra);
+            headPalavra = toInsert;
+            return true;
+        } else {
+            return insertOnAlphabeticOrder(headPalavra, headPalavra.getRefNextPalavra(), toInsert);
+        }
+    }
+
+    private boolean insertOnAlphabeticOrder(NodoPalavra before, NodoPalavra after, NodoPalavra toInsert) {
+        if (after == null) {
+            before.setRefNextPalavra(toInsert);
+            return true;
+        } else if (after.getPalavra().compareTo(toInsert.getPalavra()) > 0) {
+            toInsert.setRefNextPalavra(after);
+            before.setRefNextPalavra(toInsert);
+            return true;
+        } else {
+            return insertOnAlphabeticOrder(after, after.getRefNextPalavra(), toInsert);
+        }
+    }
     public List<Integer> getPaginas(String palavra) {
         NodoPalavra nodoPalavra = findPalavra(palavra);
         return nodoPalavra == null
@@ -48,7 +69,7 @@ public class Index {
             aux.append(palavra).append(" {").append(getPaginas(palavra)).append("}");
             aux.append("\n");
         }
-        return "Indice{ " + aux +" }";
+        return "Indice{ palvras=" + aux +" }";
     }
 
     private NodoPalavra findPalavra(String palavra) {
@@ -108,6 +129,14 @@ public class Index {
                 pagina = pagina.getNextpagina();
             } while (pagina != null);
             return paginas;
+        }
+
+        @Override
+        public String toString() {
+            return "NodoPalavra{" +
+                    "palavra='" + palavra + '\'' + ',' +
+                    "Paginas=" + getListaPaginas() +
+                    '}';
         }
     }
 
