@@ -66,7 +66,7 @@ public class Index {
         StringBuilder aux = new StringBuilder();
         List<String> list = getPalavras();
         for (String palavra : list ) {
-            aux.append(palavra).append(" {").append(getPaginas(palavra)).append("}");
+            aux.append(palavra).append(" {paginas=").append(getPaginas(palavra)).append("}");
             aux.append("\n");
         }
         return "Indice{ palvras=" + aux +" }";

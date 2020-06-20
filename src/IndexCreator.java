@@ -6,7 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class IndexCreator {
-    private static final String REGEX_ONLY_WORDS_PATTERN = "[,.]";
+    private static final String REGEX_ONLY_WORDS_PATTERN = "\\W";
     private final String fileName;
 
     public IndexCreator(String fileName) {
@@ -23,11 +23,13 @@ public class IndexCreator {
             String line = null;
             while ((line = reader.readLine()) != null) {
 
+                if(line.isBlank()) continue;
+
                 for (String word : line.toLowerCase().trim().split(" ")) {
                     indice.addPalavraPagina(word.replaceAll(REGEX_ONLY_WORDS_PATTERN, ""), numPaginas);
                 }
 
-                if (++numLinhas % 5 == 0) {
+                if (++numLinhas % 40 == 0) {
                     numPaginas++;
                 }
             }
