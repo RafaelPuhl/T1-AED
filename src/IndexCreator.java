@@ -4,9 +4,12 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class IndexCreator {
-    private static final String REGEX_ONLY_WORDS_PATTERN = "\\W";
+    private static final String REGEX_ONLY_WORDS_PATTERN = "[^a-zA-Z0-9_\\-\\s]";
     private final String fileName;
 
     public IndexCreator(String fileName) {
@@ -15,7 +18,7 @@ public class IndexCreator {
 
     public Index getIndex() {
         Index indice = new Index();
-        int numLinhas = 0;
+        int numLinhas = 1;
         int numPaginas = 1;
 
 
@@ -23,10 +26,14 @@ public class IndexCreator {
             String line = null;
             while ((line = reader.readLine()) != null) {
 
-                if(line.isBlank()) continue;
+                String [] words = line.toLowerCase()
+                        .replaceAll(REGEX_ONLY_WORDS_PATTERN, "")
+                        .trim()
+                        .split(" ");
 
-                for (String word : line.toLowerCase().trim().split(" ")) {
-                    indice.addPalavraPagina(word.replaceAll(REGEX_ONLY_WORDS_PATTERN, ""), numPaginas);
+                for (String word : words) {
+                    if (word.isBlank()) continue;
+                    indice.addPalavraPagina(word, numPaginas);
                 }
 
                 if (++numLinhas % 40 == 0) {
