@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class Indice {
+public class Index {
 
     private NodoPalavra headPalavra;
     private NodoPalavra tailPalavra;
@@ -42,11 +42,11 @@ public class Indice {
 
     @Override
     public String toString() {
-        String aux = "";
+        StringBuilder aux = new StringBuilder();
         List<String> list = getPalavras();
         for (String palavra : list ) {
-            aux = palavra + " {" + getPaginas(palavra) + "}";
-            aux = "\n";
+            aux.append(palavra).append(" {").append(getPaginas(palavra)).append("}");
+            aux.append("\n");
         }
         return "Indice{ " + aux +" }";
     }
