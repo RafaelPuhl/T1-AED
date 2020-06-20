@@ -32,7 +32,7 @@ public class IndexCreator {
                         .split(" ");
 
                 for (String word : words) {
-                    if (word.isBlank()) continue;
+                    if (word.trim().isEmpty()) continue;
                     indice.addPalavraPagina(word, numPaginas);
                 }
 
